@@ -25,16 +25,17 @@ namespace ConfigurationExpr.Test
         [Test]
         public void ChangeAwareProviderTest() {
             var configRoot = ConfigBuilderTestWith(getChangeProvider());
-
-            var val1 = configRoot["key1"];
-            configRoot["key1"] = "value0";
-
-            var sections = configRoot.GetChildren();
-
             _mockConfigProvider.Verify(p=>p.Load(), Times.Once);
             _mockConfigProvider.Verify(p=>p.GetReloadToken(), Times.Once);
+
+            var val1 = configRoot["key1"];
             _mockConfigProvider.Verify(p=>p.TryGet("key1", out It.Ref<string>.IsAny), Times.Once);
+
+            configRoot["key1"] = "value0";
             _mockConfigProvider.Verify(p=>p.Set("key1", "value0"), Times.Once);
+
+            var sections = configRoot.GetChildren();
+            _mockConfigProvider.Verify(p=>p.GetChildKeys(It.IsAny<IEnumerable<string>>(), It.IsAny<string>()), Times.Once);
         }
 
         [Test]
