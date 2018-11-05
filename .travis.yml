@@ -1,0 +1,6 @@
+language: csharp
+solution: ConfigurationExpr.sln
+dotnet: 2.1.4
+script:
+  - dotnet build
+  - dotnet test ./ConfigurationExpr.Test/ConfigurationExpr.Test.csproj
