@@ -56,9 +56,14 @@ namespace ConfigurationExpr.Test
 
             var children = configRoot.GetChildren();
             var childrenList = children.ToList();
-            Assert.That(childrenList.Count(), Is.EqualTo(6));
+            Assert.That(childrenList.Count(), Is.EqualTo(7));
             childrenList.ForEach(s => _log.Info($"key: {s.Key}, path: {s.Path}, value: {s.Value}"));
 
+            var key3Section = configRoot.GetSection("key3");
+            Assert.That(key3Section, Is.Not.Null);
+            var key3List = key3Section.GetChildren().ToList();
+            key3List.ForEach(s => _log.Info($"key: {s.Key}, path: {s.Path}, value: {s.Value}"));
+            
         }
     }
 }
