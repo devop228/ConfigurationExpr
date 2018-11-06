@@ -21,21 +21,10 @@ namespace ConfigurationExpr.Test
     [TestFixture]
     public class ConfigurationBindingTest
     {
-        private Dictionary<string, string> inMemoryConfig = new Dictionary<string, string> {
-            ["DbSettings:server"] = "home.zhusmelb.com",
-            ["DbSettings:ports:0"] = "3303",
-            ["DbSettings:ports:1"] = "3305",
-            ["DbSettings:ports:2"] = "3306",
-            ["DbSettings:ports:3"] = "3307",
-            ["DbSettings:user"] = "yzhu",
-            ["DbSettings:password"] = "123456789",
-            ["key0"] = "abcdef"
-        };
-
         [Test]
         public void BindingTest() {
             var builder = new ConfigurationBuilder();
-            builder.AddInMemoryCollection(inMemoryConfig);
+            builder.AddInMemoryCollection(InMemoryData.TestData);
 
             var configRoot = builder.Build();
             var dbSettings = configRoot.GetSection("DbSettings").Get<DbSettings>();
