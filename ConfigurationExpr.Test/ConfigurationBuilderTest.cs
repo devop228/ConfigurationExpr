@@ -42,7 +42,7 @@ namespace ConfigurationExpr.Test
         public void NoChangeProviderTest() {
             ConfigBuilderTestWith(getNonChangeProvider());
         }
-
+        
         private IConfigurationRoot ConfigBuilderTestWith(IConfigurationProvider povider) {
             var configBuilder = new ConfigurationBuilder();
 
@@ -103,6 +103,28 @@ namespace ConfigurationExpr.Test
             _mockConfigProvider = mockConfigProvider;
 
             return mockConfigProvider.Object;
+        }
+    }
+
+    [TestFixture]
+    public class ConfigSectionTest 
+    {
+        [Test]
+        public void NonExistSectionTest() {
+            var builder = new ConfigurationBuilder();
+            builder.AddInMemoryCollection(InMemoryData.TestData);
+
+            var configRoot = builder.Build();
+            var section = configRoot.GetSection("main:nonexist");
+            // GetSection always returns a ConfigurationSection object, and its Key
+            // and Path are all valid with value as passed in. But if the section
+            // doesn't exist in the configuration, Exists() returns false and Value
+            // returns null.
+            Assert.That(section, Is.Not.Null);
+            Assert.That(section.Exists(), Is.False);
+            Assert.That(section.Key, Is.EqualTo("nonexist"));
+            Assert.That(section.Value, Is.Null);
+            Assert.That(section.Path, Is.EqualTo("main:nonexist"));
         }
     }
 }
